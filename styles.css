@@ -90,10 +90,16 @@ body.is-ready .reel-card.is-hidden { opacity: 0; transform: translateY(40px); po
 .yt.is-playing::after { display: none; }
 .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* sticker (like the reference's green block) */
-.sticker { background: var(--cyan); color: var(--navy); padding: clamp(70px, 9vw, 130px) 0; border-radius: 36px; margin-top: -36px; position: relative; z-index: 3; }
-.sticker__big { font-size: clamp(1.7rem, 4.4vw, 3.6rem); font-weight: 600; line-height: 1.08; letter-spacing: -.04em; max-width: 24ch; }
-.sticker__small { margin-top: 2.4rem; max-width: 56ch; font-weight: 500; }
+/* statement block */
+.sticker { background: var(--navy); color: #fff; padding: clamp(80px, 10vw, 150px) 0 clamp(70px, 8vw, 120px); border-radius: 36px 36px 0 0; margin-top: -36px; position: relative; z-index: 3; }
+.eyebrow--light { color: #5cc8ff; }
+.sticker__big { font-size: clamp(1.7rem, 3.5vw, 3rem); font-weight: 500; line-height: 1.22; letter-spacing: -.02em; max-width: 30ch; color: #fff; }
+.sticker__big em { font-style: normal; color: #5cc8ff; }
+.sticker__cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 70px); margin-top: clamp(40px, 6vw, 80px); max-width: 920px; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.18); }
+.sticker__cols p { color: #a9c6d6; font-size: 1.05rem; line-height: 1.6; }
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2.4rem; }
+.tags li { padding: .55rem 1.1rem; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; font-size: .9rem; font-weight: 500; color: #e6f3fa; }
+@media (max-width: 760px) { .sticker__cols { grid-template-columns: 1fr; } }
 
 /* marquee */
 .trust { background: var(--navy); padding: 36px 0; overflow: hidden; margin-top: -36px; padding-top: 72px; position: relative; z-index: 2; }

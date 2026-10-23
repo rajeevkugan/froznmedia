@@ -226,7 +226,7 @@
 
   // nav switches to dark-on-light over the pale sections
   const nav = $('.nav'), lights = [...document.querySelectorAll('.projects, .services')];
-  const tick = () => nav.classList.toggle('on-light', lights.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; }));
+  const tick = () => nav.classList.toggle('on-light', lights.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 80; }));
   addEventListener('scroll', tick, { passive: true }); tick();
 
   // floating reel card lives over the hero, then steps aside
