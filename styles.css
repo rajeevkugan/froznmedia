@@ -64,7 +64,7 @@ body.is-loading main-slot, body.is-loading .hero, body.is-loading .projects, bod
 .ln { display: block; }
 .ln--navy { color: var(--navy); }
 
-body.is-ready body.is-ready 
+
 /* projects */
 .projects { background: var(--paper); color: var(--navy); padding: clamp(80px, 10vw, 150px) 0 clamp(80px, 9vw, 130px); border-radius: 36px 36px 0 0; margin-top: -36px; position: relative; z-index: 2; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 14px; padding: clamp(30px, 5vw, 60px) 14px 40px; }
@@ -137,7 +137,8 @@ body.is-ready body.is-ready
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .loader { display: none; }
-  .ln > span,   .marquee__track, .loader__logo, .ig::before { animation: none; }
+  .ln > span, .reveal { transform: none !important; opacity: 1 !important; transition: none !important; }
+  .marquee__track, .loader__logo, .ig::before { animation: none; }
 }
 
 /* nav adapts over light sections */
@@ -157,7 +158,7 @@ body:has(.menu.is-open) .nav .menu-pill i { background: #fff; }
 /* faint looping YouTube background behind the hero */
 .hero { z-index: 1; background: transparent; }
 .hero > :not(.hero__video) { position: relative; z-index: 1; }
-.hero > .hero__video.is-off { opacity: 0 !important; }
+.hero__video.is-off { opacity: 0 !important; }
 .hero__video { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh; z-index: 0; overflow: hidden; opacity: 0; transition: opacity 2.5s ease; pointer-events: none; background: var(--blue); }
 .hero__video.is-on { opacity: .28; }
 .hero__video::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,132,214,.45), rgba(10,132,214,.1) 40%, rgba(10,132,214,.55)); }
