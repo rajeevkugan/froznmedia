@@ -81,8 +81,9 @@
     let t0 = null, revealed2 = false;
     const frame = (now) => {
       if (t0 === null) t0 = now;
-      const tr = now - t0, TDR = tD / 1.3;                         // real ms
-      const t = tr < TDR ? tr * 1.3 : tD + (tr - TDR) * 1.1;      // design ms: build-up 30% faster, vanish 10% faster
+      const SPEED_IN = 1.69, SPEED_OUT = 1.32;                      // build-up 1.3x1.3 faster, vanish 1.1x1.2 faster
+      const tr = now - t0, TDR = tD / SPEED_IN;                    // real ms
+      const t = tr < TDR ? tr * SPEED_IN : tD + (tr - TDR) * SPEED_OUT; // design ms
       ctx.clearRect(0, 0, VW, VH);
 
       // solid logo: fades in once the particles have landed, then erodes left-to-right into dust
