@@ -100,7 +100,7 @@ h2 em { font-style: normal; background: linear-gradient(180deg, #4fc3f7, var(--b
 .about { padding: clamp(60px, 8vw, 120px) 0; background: linear-gradient(180deg, var(--ink), #04293b 50%, var(--ink)); }
 .about__grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(30px, 6vw, 80px); align-items: center; }
 .about__photo { position: relative; aspect-ratio: 4/5; border-radius: 28px; overflow: hidden; border: 1px solid rgba(169,216,239,.25); background: linear-gradient(160deg, var(--blue-d), var(--ink)); }
-.about__photo img { width: 100%; height: 100%; object-fit: cover; }
+.about__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 40% 20%; }
 .about__initials { display: none; position: absolute; inset: 0; place-items: center; font: 900 6rem var(--display); opacity: .35; }
 .about__photo--empty .about__initials { display: grid; }
 .role { color: var(--blue); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .85rem; margin: .6rem 0 1.4rem; }
