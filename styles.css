@@ -36,6 +36,9 @@ a { color: inherit; }
 .loader { position: fixed; inset: 0; z-index: 100; background: var(--blue); display: grid; place-items: center; transition: transform 1s var(--ease); }
 .loader__logo { width: min(310px, 60vw); animation: pulse 1.1s ease-in-out infinite alternate; transition: transform .8s var(--ease), opacity .5s; }
 @keyframes pulse { from { transform: scale(.96); opacity: .85; } to { transform: scale(1.02); opacity: 1; } }
+.loader__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
+.loader.has-canvas .loader__canvas { display: block; }
+.loader.has-canvas .loader__logo { display: none; }
 .loader.is-done { transform: translateY(-100%); }
 .loader.is-done .loader__logo { transform: translateY(-30vh) scale(.6); opacity: 0; }
 
