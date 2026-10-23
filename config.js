@@ -32,7 +32,8 @@ window.FROZN = {
     // { id: 'dQw4w9WgXcQ', title: 'Anirudh Live — Concert Film' },
   ],
 
-  trusted: ['Anirudh', 'Yuvan', '50 Cent', 'French Montana', 'CollegeTrackr', 'NCAA', 'KothuFest', 'High Quality Entertainment'],
+  // scrolling strip: the kinds of things we film
+  trusted: ['Commercials', 'Concert Films', 'Real Estate', 'Weddings', 'Music Videos', 'Brand Films', 'Reels & Social', 'Product Ads', 'Events', 'Personal Brands'],
 
   services: [
     { n: '01', t: 'Creative Ads', d: 'Concept-to-cut commercials and social ads engineered to convert.' },
