@@ -112,6 +112,43 @@
     requestAnimationFrame(frame);
   }
 
+
+  /* ---------- faint looping YouTube hero background (stops 5s before the end, then loops) ---------- */
+  (function heroVideo() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const VIDEO_ID = 'QtgwJ-2qoLM', CUT_END = 5;
+    const wrap = $('#heroVideo');
+    window.onYouTubeIframeAPIReady = () => {
+      let player, timer, ready = false, visible = true;
+      player = new YT.Player('ytBg', {
+        videoId: VIDEO_ID,
+        playerVars: { autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, playsinline: 1, rel: 0, iv_load_policy: 3, cc_load_policy: 0, origin: location.origin },
+        events: {
+          onReady: (e) => { ready = true; e.target.mute(); e.target.playVideo(); },
+          onStateChange: (e) => {
+            if (e.data === YT.PlayerState.PLAYING) {
+              wrap.classList.add('is-on');
+              clearInterval(timer);
+              timer = setInterval(() => {
+                const d = player.getDuration();
+                if (d > CUT_END + 1 && player.getCurrentTime() >= d - CUT_END) player.seekTo(0, true);
+              }, 200);
+            } else if (e.data === YT.PlayerState.ENDED) { player.seekTo(0, true); player.playVideo(); }
+          },
+        },
+      });
+      // save battery/data: pause while the hero is off-screen
+      new IntersectionObserver(([en]) => {
+        visible = en.isIntersecting;
+        if (!ready) return;
+        visible ? player.playVideo() : player.pauseVideo();
+      }, { threshold: 0.05 }).observe($('#top'));
+    };
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  })();
+
   /* ---------- menu ---------- */
   const menu = $('#menu'), btn = $('#menuBtn');
   const setMenu = (open) => {
