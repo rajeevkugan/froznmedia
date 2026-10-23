@@ -169,3 +169,11 @@ body:has(.menu.is-open) .nav .menu-pill i { background: #fff; }
 .hero__video { container-type: size; }
 #ytBg, .hero__video iframe { position: absolute; top: 0; left: 50%; width: max(100cqw, 177.78cqh); height: max(56.25cqw, 100cqh); transform: translateX(-50%); border: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .hero__video { display: none; } }
+
+/* auto-playing reel previews, side by side */
+.grid.reels { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; padding: clamp(30px, 5vw, 60px) clamp(14px, 3vw, 36px) 40px; scrollbar-width: none; }
+.grid.reels::-webkit-scrollbar { display: none; }
+.reel { position: relative; flex: 0 0 clamp(220px, 23vw, 340px); aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; background: #0b2a3b; scroll-snap-align: start; display: block; transition: transform .5s var(--ease); }
+.reel:hover { transform: translateY(-8px); }
+.reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.reel__cap { position: absolute; left: 14px; bottom: 14px; padding: .45rem .9rem; border-radius: 999px; background: rgba(3,28,44,.55); backdrop-filter: blur(8px); color: #fff; font-weight: 600; font-size: .85rem; }

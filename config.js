@@ -15,6 +15,12 @@ window.FROZN = {
     { type: 'reel', code: 'DeIHpNUSJcW' },
   ],
 
+  // Auto-playing reel previews (used instead of the Instagram embeds when this list isn't empty).
+  // Drop vertical .mp4 files in assets/reels/ and list them here. `link` is where a click goes.
+  reels: [
+    // { src: '/assets/reels/anirudh.mp4', poster: '/assets/reels/anirudh.jpg', title: 'Anirudh Live', link: 'https://www.instagram.com/reel/XXXX/' },
+  ],
+
   // YouTube films to highlight. Add 11-character video IDs (the part after v=).
   // Leave empty and the "Featured films" section stays hidden.
   youtube: [

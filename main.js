@@ -166,18 +166,41 @@
   $('#yr').textContent = new Date().getFullYear();
 
   const grid = $('#igGrid');
-  (CFG.instagram || []).forEach((p) => {
-    const card = document.createElement('div');
-    card.className = 'ig';
-    const f = document.createElement('iframe');
-    f.loading = 'lazy';
-    f.title = 'Instagram post from @froznmedia';
-    f.src = `https://www.instagram.com/${p.type}/${p.code}/embed/`;
-    f.allowFullscreen = true;
-    f.addEventListener('load', () => card.classList.add('loaded'));
-    card.append(f);
-    grid.append(card);
-  });
+  const reels = CFG.reels || [];
+  if (reels.length) {
+    // real reel files: muted, looping previews that play only while on screen
+    grid.classList.add('reels');
+    reels.forEach((r) => {
+      const a = document.createElement(r.link ? 'a' : 'div');
+      a.className = 'reel';
+      if (r.link) { a.href = r.link; a.target = '_blank'; a.rel = 'noopener'; }
+      const v = document.createElement('video');
+      Object.assign(v, { src: r.src, muted: true, loop: true, playsInline: true, preload: 'metadata' });
+      v.muted = true; v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      if (r.poster) v.poster = r.poster;
+      a.append(v);
+      if (r.title) a.insertAdjacentHTML('beforeend', `<span class="reel__cap">${r.title}</span>`);
+      grid.append(a);
+    });
+    const vio = new IntersectionObserver((es) => es.forEach((e) => {
+      const v = e.target.querySelector('video');
+      if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+    }), { threshold: 0.4 });
+    grid.querySelectorAll('.reel').forEach((el) => vio.observe(el));
+  } else {
+    (CFG.instagram || []).forEach((p) => {
+      const card = document.createElement('div');
+      card.className = 'ig';
+      const f = document.createElement('iframe');
+      f.loading = 'lazy';
+      f.title = 'Instagram post from @froznmedia';
+      f.src = `https://www.instagram.com/${p.type}/${p.code}/embed/`;
+      f.allowFullscreen = true;
+      f.addEventListener('load', () => card.classList.add('loaded'));
+      card.append(f);
+      grid.append(card);
+    });
+  }
 
   const trusted = CFG.trusted || [];
   $('#marquee').innerHTML = [...trusted, ...trusted].map((t) => `<span>${t}</span>`).join('');
