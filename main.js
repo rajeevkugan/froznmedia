@@ -70,7 +70,7 @@
       });
     }
     const sprite = (rgb) => { const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d');
-      const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.35, `rgba(${rgb},.45)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+      const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.18, `rgba(${rgb},.85)`); gr.addColorStop(.45, `rgba(${rgb},.18)`); gr.addColorStop(1, `rgba(${rgb},0)`);
       g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return c; };
     const cyan = sprite('90,200,255'), white = sprite('255,255,255');
     const sparkles = Array.from({ length: 36 }, () => ({ x: lx + rnd() * LW, y: ly + rnd() * LH, ph: rnd() * 6.28, f: 1.5 + rnd() * 3 }));
@@ -81,7 +81,8 @@
     let t0 = null, revealed2 = false;
     const frame = (now) => {
       if (t0 === null) t0 = now;
-      const t = now - t0;
+      const tr = now - t0, TDR = tD / 1.3;                         // real ms
+      const t = tr < TDR ? tr * 1.3 : tD + (tr - TDR) * 1.1;      // design ms: build-up 30% faster, vanish 10% faster
       ctx.clearRect(0, 0, VW, VH);
 
       // solid logo: fades in once the particles have landed, then erodes left-to-right into dust
@@ -99,9 +100,9 @@
         }
         ctx.save();
         ctx.globalAlpha = inA;
-        ctx.shadowColor = 'rgba(70,180,255,.9)'; ctx.shadowBlur = 26 * (1 - clamp((t - tD) / 800));
+        ctx.shadowColor = 'rgba(70,180,255,.9)'; ctx.shadowBlur = 14 * (1 - clamp((t - tD) / 800));
         ctx.drawImage(tmp, lx, ly, LW, LH);
-        ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = inA * 0.55; // lift the gradient so it glows like the film
+        ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = inA * 0.38; // lift the gradient so it glows like the film
         ctx.drawImage(tmp, lx, ly, LW, LH);
         ctx.restore();
       }
@@ -115,9 +116,9 @@
         ctx.globalAlpha = fi;
         const gx = ctx.createLinearGradient(headX - 520, 0, headX + 260, 0);
         gx.addColorStop(0, 'rgba(70,140,255,0)'); gx.addColorStop(.7, 'rgba(110,190,255,.55)'); gx.addColorStop(.92, 'rgba(255,255,255,.95)'); gx.addColorStop(1, 'rgba(110,190,255,0)');
-        ctx.fillStyle = gx; ctx.fillRect(headX - 520, cyl - 1.2, 780, 2.4);
-        ctx.drawImage(white, headX - 70, cyl - 70, 140, 140);
-        ctx.drawImage(cyan, headX - 150, cyl - 90, 300, 180);
+        ctx.fillStyle = gx; ctx.fillRect(headX - 520, cyl - 0.75, 780, 1.5);
+        ctx.drawImage(white, headX - 46, cyl - 46, 92, 92);
+        ctx.globalAlpha = fi * 0.55; ctx.drawImage(cyan, headX - 130, cyl - 70, 260, 140); ctx.globalAlpha = fi;
       }
 
       // assembling particles
@@ -130,8 +131,9 @@
         const settle = 1 - inA;
         const tw = 0.7 + 0.3 * Math.sin(t / 90 * p.tw / 4 + p.ph);
         ctx.globalAlpha = Math.min(1, (0.16 + 0.34 * (1 - a)) * Math.max(settle, a < 1 ? 1 : 0)) * tw;
-        const s = p.size * 2.4;
+        const s = p.size * 1.7;
         ctx.drawImage(cyan, x - s, y - s, s * 2, s * 2);
+        ctx.fillStyle = a < 0.6 ? '#ffffff' : '#9fe0ff'; ctx.fillRect(x - 0.6, y - 0.6, 1.2, 1.2);
         if (a < 0.4) { ctx.globalAlpha *= 0.7; const w = s * 0.5; ctx.drawImage(white, x - w, y - w, w * 2, w * 2); }
       }
 
@@ -154,8 +156,9 @@
           const y = p.ty - p.vy * u + Math.sin(u * 2.3 + p.ph * 2) * 6 * u - 8 * u * u;
           const tw = 0.55 + 0.45 * Math.sin(u * p.tw * 3 + p.ph);
           ctx.globalAlpha = Math.pow(1 - k, 1.3) * tw;
-          const s = p.size * (3.4 - 1.6 * k);
+          const s = p.size * (2.3 - 1.1 * k);
           ctx.drawImage(k < 0.35 ? cyan : white, x - s, y - s, s * 2, s * 2);
+          ctx.fillStyle = '#ffffff'; ctx.fillRect(x - 0.6, y - 0.6, 1.2, 1.2);
         }
       }
 
