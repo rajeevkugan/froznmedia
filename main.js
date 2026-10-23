@@ -3,11 +3,18 @@
   const $ = (s) => document.querySelector(s);
   const body = document.body;
 
+  // always open on the first section (no browser scroll-restore, no stray #hash jump)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  const toTop = () => scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  toTop();
+
   /* ---------- intro: logo centred, cracks, shatters into glass shards, panel lifts ---------- */
   const loader = $('#loader');
   let revealed = false;
   const startReveal = () => {
     if (revealed) return; revealed = true;
+    toTop();
     loader.classList.add('is-clear');          // blue panel melts away; the page rises underneath
     body.classList.remove('is-loading');
     body.classList.add('is-ready');
