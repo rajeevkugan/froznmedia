@@ -8,10 +8,10 @@
   let revealed = false;
   const startReveal = () => {
     if (revealed) return; revealed = true;
-    loader.classList.add('is-done');
+    loader.classList.add('is-clear');          // blue panel melts away; the page rises underneath
     body.classList.remove('is-loading');
-    setTimeout(() => body.classList.add('is-ready'), 350);
-    setTimeout(() => loader.remove(), 1600);
+    body.classList.add('is-ready');
+    setTimeout(() => loader.remove(), 6000);
   };
   setTimeout(startReveal, 9000); // never trap the visitor behind the loader
 
@@ -20,7 +20,7 @@
   logo.src = '/assets/logo-white.png';
   Promise.all([logo.decode ? logo.decode().catch(() => {}) : Promise.resolve(), fontsReady]).then(() => {
     const cv = $('#loaderCanvas');
-    if (!cv || !logo.naturalWidth) { setTimeout(startReveal, 1200); return; }
+    if (!cv || !logo.naturalWidth) { setTimeout(startReveal, 800); return; }
     shatterIntro(cv);
   });
 
@@ -51,18 +51,19 @@
         const dx = cx - ix, dy = cy - iy, dist = Math.hypot(dx, dy) || 1;
         const k = 1 + (1 - Math.min(1, dist / LW)) * 1.4;
         shards.push({ t, cx, cy, vx: dx / dist * (160 + rnd() * 260) * k + (rnd() - .5) * 80, vy: dy / dist * (120 + rnd() * 220) * k - 60 * rnd(), g: 500 + rnd() * 700,
-          rot: (rnd() - .5) * 9, flip: (rnd() - .5) * 9, pop: 1 + rnd() * 1.4, delay: Math.min(.18, dist / LW * .2) });
+          rot: (rnd() - .5) * 9, flip: (rnd() - .5) * 9, zv: 0.82 + Math.max(0, 1 - dist / LW) * 0.15 + rnd() * 0.03, delay: Math.min(.18, dist / LW * .2) });
       });
     }
 
-    const BREAK = 1100, SLOW = 3500, FLY_T = 1.1; // explosion plays in slow motion over SLOW ms
+    const BREAK = 1100, SLOW = 4200, FLY_T = 1.1; // explosion plays in slow motion over SLOW ms
     let t0 = null, lifted = false;
-    const drawShard = (s, T) => {
+    const drawShard = (s, T, u) => {
       const tt = Math.max(0, T - s.delay);
+      const scl = Math.min(16, 1 / (1 - s.zv * Math.pow(u, 1.3)));          // flies toward the viewer: grows until it hits the screen
       ctx.save();
-      ctx.translate(lx + s.cx + s.vx * tt, ly + s.cy + s.vy * tt + s.g * tt * tt);
+      ctx.translate(VW / 2 + (lx + s.cx - VW / 2 + s.vx * tt) * scl, VH / 2 + (ly + s.cy - VH / 2 + s.vy * tt + s.g * tt * tt) * scl);
       ctx.rotate(s.rot * tt);
-      ctx.scale(Math.cos(s.flip * tt) * (1 + (s.pop - 1) * tt), 1 + (s.pop - 1) * tt);
+      ctx.scale(Math.cos(s.flip * tt) * scl, scl);
       ctx.beginPath();
       s.t.forEach((p, i) => (i ? ctx.lineTo(p.x - s.cx, p.y - s.cy) : ctx.moveTo(p.x - s.cx, p.y - s.cy)));
       ctx.closePath(); ctx.clip();
@@ -93,12 +94,12 @@
         // motion blur: several trailing time samples of every shard
         const K = 6;
         for (let k = K - 1; k >= 0; k--) {
-          ctx.globalAlpha = (k === 0 ? 1 : 0.22 * (1 - k / K)) * Math.max(0, 1 - Math.pow(Math.min(1, T / FLY_T), 2.4));
-          shards.forEach((s) => drawShard(s, Math.max(0, T - k * 0.01)));
+          ctx.globalAlpha = (k === 0 ? 1 : 0.22 * (1 - k / K)) * (1 - Math.pow(Math.max(0, (u - 0.82) / 0.18), 1.6));
+          shards.forEach((s) => drawShard(s, Math.max(0, T - k * 0.01), Math.max(0, u - k * 0.004)));
         }
         ctx.globalAlpha = 1;
       }
-      if (!lifted && t > BREAK + 2500) { lifted = true; startReveal(); }
+      if (!lifted && t > BREAK + 350) { lifted = true; startReveal(); }
       if (t < BREAK + SLOW + 400) requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
