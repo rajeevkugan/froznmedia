@@ -22,6 +22,7 @@ window.FROZN = {
     { src: '/assets/reels/foxden-sold.mp4',    poster: '/assets/reels/foxden-sold.jpg',    title: 'Foxden — Sold' },
     { src: '/assets/reels/wildwood-sold.mp4',  poster: '/assets/reels/wildwood-sold.jpg',  title: '2358 Wildwood — Sold Over Asking' },
     { src: '/assets/reels/kingfisher.mp4',     poster: '/assets/reels/kingfisher.jpg',     title: 'Kingfisher Listing' },
+    { src: '/assets/reels/courtice.mp4',     poster: '/assets/reels/courtice.jpg',     title: 'Home in Courtice' },
     // { src: '/assets/reels/anirudh.mp4', poster: '/assets/reels/anirudh.jpg', title: 'Anirudh Live', link: 'https://www.instagram.com/reel/XXXX/' },
   ],
 
