@@ -13,7 +13,7 @@
     setTimeout(() => body.classList.add('is-ready'), 350);
     setTimeout(() => loader.remove(), 1600);
   };
-  setTimeout(startReveal, 5000); // never trap the visitor behind the loader
+  setTimeout(startReveal, 9000); // never trap the visitor behind the loader
 
   const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
   const logo = new Image();
@@ -32,7 +32,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     loader.classList.add('has-canvas');
 
-    const LW = Math.min(310, VW * 0.6), LH = LW * logo.naturalHeight / logo.naturalWidth;
+    const LW = Math.min(403, VW * 0.78), LH = LW * logo.naturalHeight / logo.naturalWidth;
     const lx = (VW - LW) / 2, ly = (VH - LH) / 2;
     let seed = 11;
     const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
@@ -55,7 +55,7 @@
       });
     }
 
-    const BREAK = 1100, FLY = 1100;
+    const BREAK = 1100, SLOW = 3500, FLY_T = 1.1; // explosion plays in slow motion over SLOW ms
     let t0 = null, lifted = false;
     const drawShard = (s, T) => {
       const tt = Math.max(0, T - s.delay);
@@ -89,17 +89,17 @@
         }
         ctx.restore();
       } else {
-        const T = (t - BREAK) / 1000;
+        const u = Math.min(1, (t - BREAK) / SLOW), T = FLY_T * (1 - Math.pow(1 - u, 1.6));
         // motion blur: several trailing time samples of every shard
         const K = 6;
         for (let k = K - 1; k >= 0; k--) {
-          ctx.globalAlpha = (k === 0 ? 1 : 0.22 * (1 - k / K)) * Math.max(0, 1 - Math.pow(Math.min(1, T / (FLY / 1000)), 2.2));
-          shards.forEach((s) => drawShard(s, Math.max(0, T - k * 0.018)));
+          ctx.globalAlpha = (k === 0 ? 1 : 0.22 * (1 - k / K)) * Math.max(0, 1 - Math.pow(Math.min(1, T / FLY_T), 2.4));
+          shards.forEach((s) => drawShard(s, Math.max(0, T - k * 0.01)));
         }
         ctx.globalAlpha = 1;
       }
-      if (!lifted && t > BREAK + 450) { lifted = true; startReveal(); }
-      if (t < BREAK + FLY + 400) requestAnimationFrame(frame);
+      if (!lifted && t > BREAK + 2500) { lifted = true; startReveal(); }
+      if (t < BREAK + SLOW + 400) requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   }
