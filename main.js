@@ -24,14 +24,16 @@
 
   const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
   const logo = new Image();
-  logo.src = '/assets/logo-white.png';
+  logo.src = '/assets/logo-blue.png';
   Promise.all([logo.decode ? logo.decode().catch(() => {}) : Promise.resolve(), fontsReady]).then(() => {
     const cv = $('#loaderCanvas');
     if (!cv || !logo.naturalWidth) { setTimeout(startReveal, 800); return; }
-    shatterIntro(cv);
+    dustIntro(cv);
   });
 
-  function shatterIntro(cv) {
+  // Intro: a bolt of light sweeps across and the logo assembles from glowing particles
+  // (like the FROZN outro film), holds, then vanishes in pixie dust.
+  function dustIntro(cv) {
     const ctx = cv.getContext('2d');
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const VW = innerWidth, VH = innerHeight;
@@ -40,78 +42,130 @@
     loader.classList.add('has-canvas');
 
     const LW = Math.min(403, VW * 0.78), LH = LW * logo.naturalHeight / logo.naturalWidth;
-    const lx = (VW - LW) / 2, ly = (VH - LH) / 2;
-    let seed = 11;
+    const lx = (VW - LW) / 2, ly = (VH - LH) / 2, cyl = VH / 2;
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const smooth = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
+    let seed = 7;
     const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
 
-    // triangulate the logo into glass shards
-    const cols = 9, rows = 4, pts = [];
-    for (let r = 0; r <= rows; r++) { pts[r] = []; for (let c = 0; c <= cols; c++) pts[r][c] = {
-      x: c / cols * LW + (c && c < cols ? (rnd() - .5) * LW / cols * .8 : 0),
-      y: r / rows * LH + (r && r < rows ? (rnd() - .5) * LH / rows * .8 : 0) }; }
-    const ix = LW * 0.5, iy = LH * 0.38; // impact = the diamond mark
-    const shards = [];
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const a = pts[r][c], b = pts[r][c + 1], d = pts[r + 1][c], e = pts[r + 1][c + 1];
-      ((r + c) % 2 ? [[a, b, d], [b, e, d]] : [[a, b, e], [a, e, d]]).forEach((t) => {
-        const cx = (t[0].x + t[1].x + t[2].x) / 3, cy = (t[0].y + t[1].y + t[2].y) / 3;
-        const dx = cx - ix, dy = cy - iy, dist = Math.hypot(dx, dy) || 1;
-        const k = 1 + (1 - Math.min(1, dist / LW)) * 1.4;
-        shards.push({ t, cx, cy, vx: dx / dist * (160 + rnd() * 260) * k + (rnd() - .5) * 80, vy: dy / dist * (120 + rnd() * 220) * k - 60 * rnd(), g: 500 + rnd() * 700,
-          rot: (rnd() - .5) * 9, flip: (rnd() - .5) * 9, zv: 0.82 + Math.max(0, 1 - dist / LW) * 0.15 + rnd() * 0.03, delay: Math.min(.18, dist / LW * .2) });
+    // sample the logo's pixels -> particle targets
+    const off = document.createElement('canvas');
+    off.width = Math.ceil(LW); off.height = Math.ceil(LH);
+    const octx = off.getContext('2d', { willReadFrequently: true });
+    octx.drawImage(logo, 0, 0, LW, LH);
+    const px = octx.getImageData(0, 0, off.width, off.height).data;
+    const STEP = VW < 700 ? 3 : 2, SOFT = 60, WIPE = 1900, tD = 3000;
+    const ps = [];
+    for (let y = 0; y < off.height; y += STEP) for (let x = 0; x < off.width; x += STEP) {
+      const i = (y * off.width + x) * 4;
+      if (px[i + 3] < 110) continue;
+      const nx = x / LW;
+      ps.push({
+        tx: lx + x, ty: ly + y, nx, ph: rnd() * 6.28, size: 0.7 + rnd() * 1.1,
+        ox: -(60 + rnd() * 160), oy: (cyl - (ly + y)) * (0.8 + rnd() * 0.2) + (rnd() - .5) * 30,
+        delay: (260 + nx * LW) / (LW + 300) * 1250 + rnd() * 140, dur: 650 + rnd() * 450,
+        ts: tD + ((nx * LW + SOFT * 1.5) / (LW + 2 * SOFT)) * WIPE + rnd() * 160,
+        vx: 30 + rnd() * 150, vy: 10 + rnd() * 120, life: 1.5 + rnd() * 1.8, tw: 3 + rnd() * 5,
+        r: px[i], g: px[i + 1], b: px[i + 2],
       });
     }
+    const sprite = (rgb) => { const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d');
+      const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.35, `rgba(${rgb},.45)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+      g.fillStyle = gr; g.fillRect(0, 0, 32, 32); return c; };
+    const cyan = sprite('90,200,255'), white = sprite('255,255,255');
+    const sparkles = Array.from({ length: 36 }, () => ({ x: lx + rnd() * LW, y: ly + rnd() * LH, ph: rnd() * 6.28, f: 1.5 + rnd() * 3 }));
 
-    const BREAK = 1100, SLOW = 4200, FLY_T = 1.1; // explosion plays in slow motion over SLOW ms
-    let t0 = null, lifted = false;
-    const drawShard = (s, T, u) => {
-      const tt = Math.max(0, T - s.delay);
-      const scl = Math.min(16, 1 / (1 - s.zv * Math.pow(u, 1.3)));          // flies toward the viewer: grows until it hits the screen
-      ctx.save();
-      ctx.translate(VW / 2 + (lx + s.cx - VW / 2 + s.vx * tt) * scl, VH / 2 + (ly + s.cy - VH / 2 + s.vy * tt + s.g * tt * tt) * scl);
-      ctx.rotate(s.rot * tt);
-      ctx.scale(Math.cos(s.flip * tt) * scl, scl);
-      ctx.beginPath();
-      s.t.forEach((p, i) => (i ? ctx.lineTo(p.x - s.cx, p.y - s.cy) : ctx.moveTo(p.x - s.cx, p.y - s.cy)));
-      ctx.closePath(); ctx.clip();
-      ctx.drawImage(logo, -s.cx, -s.cy, LW, LH);
-      ctx.restore();
-    };
+    const tmp = document.createElement('canvas'); tmp.width = off.width; tmp.height = off.height;
+    const tctx = tmp.getContext('2d');
+
+    let t0 = null, revealed2 = false;
     const frame = (now) => {
       if (t0 === null) t0 = now;
       const t = now - t0;
       ctx.clearRect(0, 0, VW, VH);
-      if (t < BREAK) {
-        // intact logo, breathing; shards start to shiver just before the break
-        const pulse = 1 + Math.sin(t / 180) * 0.012;
-        ctx.save(); ctx.translate(VW / 2, VH / 2); ctx.scale(pulse, pulse); ctx.translate(-VW / 2, -VH / 2);
-        if (t < BREAK - 380) ctx.drawImage(logo, lx, ly, LW, LH);
-        else {
-          const sh = (t - (BREAK - 380)) / 380;
-          shards.forEach((s) => { ctx.save(); ctx.translate((rnd() - .5) * 3.2 * sh, (rnd() - .5) * 3.2 * sh); ctx.beginPath();
-            s.t.forEach((p, i) => (i ? ctx.lineTo(lx + p.x, ly + p.y) : ctx.moveTo(lx + p.x, ly + p.y))); ctx.closePath(); ctx.clip();
-            ctx.drawImage(logo, lx, ly, LW, LH); ctx.restore(); });
-          // hairline cracks
-          ctx.strokeStyle = `rgba(3,28,44,${0.55 * sh})`; ctx.lineWidth = 1;
-          shards.forEach((s) => { ctx.beginPath(); s.t.forEach((p, i) => (i ? ctx.lineTo(lx + p.x, ly + p.y) : ctx.moveTo(lx + p.x, ly + p.y))); ctx.closePath(); ctx.stroke(); });
+
+      // solid logo: fades in once the particles have landed, then erodes left-to-right into dust
+      const inA = smooth((t - 1500) / 900);
+      const front = -SOFT + ((t - tD) / WIPE) * (LW + 2 * SOFT);
+      if (inA > 0 && front < LW + SOFT) {
+        tctx.globalCompositeOperation = 'source-over';
+        tctx.clearRect(0, 0, tmp.width, tmp.height);
+        tctx.drawImage(logo, 0, 0, LW, LH);
+        if (t > tD) {
+          tctx.globalCompositeOperation = 'destination-out';
+          const g = tctx.createLinearGradient(front - SOFT, 0, front, 0);
+          g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+          tctx.fillStyle = g; tctx.fillRect(0, 0, tmp.width, tmp.height);
         }
+        ctx.save();
+        ctx.globalAlpha = inA;
+        ctx.shadowColor = 'rgba(70,180,255,.9)'; ctx.shadowBlur = 26 * (1 - clamp((t - tD) / 800));
+        ctx.drawImage(tmp, lx, ly, LW, LH);
+        ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = inA * 0.55; // lift the gradient so it glows like the film
+        ctx.drawImage(tmp, lx, ly, LW, LH);
         ctx.restore();
-      } else {
-        const u = Math.min(1, (t - BREAK) / SLOW), T = FLY_T * (1 - Math.pow(1 - u, 1.6));
-        // motion blur: several trailing time samples of every shard
-        const K = 6;
-        for (let k = K - 1; k >= 0; k--) {
-          ctx.globalAlpha = (k === 0 ? 1 : 0.22 * (1 - k / K)) * (1 - Math.pow(Math.max(0, (u - 0.82) / 0.18), 1.6));
-          shards.forEach((s) => drawShard(s, Math.max(0, T - k * 0.01), Math.max(0, u - k * 0.004)));
-        }
-        ctx.globalAlpha = 1;
       }
-      if (!lifted && t > BREAK + 350) { lifted = true; startReveal(); }
-      if (t < BREAK + SLOW + 400) requestAnimationFrame(frame);
+
+      ctx.globalCompositeOperation = 'lighter';
+
+      // the sweeping bolt / lens flare
+      const headX = lx - 260 + (t / 1250) * (LW + 300);
+      const fi = t < 1250 ? Math.min(1, t / 150) : clamp(1 - (t - 1250) / 450);
+      if (fi > 0) {
+        ctx.globalAlpha = fi;
+        const gx = ctx.createLinearGradient(headX - 520, 0, headX + 260, 0);
+        gx.addColorStop(0, 'rgba(70,140,255,0)'); gx.addColorStop(.7, 'rgba(110,190,255,.55)'); gx.addColorStop(.92, 'rgba(255,255,255,.95)'); gx.addColorStop(1, 'rgba(110,190,255,0)');
+        ctx.fillStyle = gx; ctx.fillRect(headX - 520, cyl - 1.2, 780, 2.4);
+        ctx.drawImage(white, headX - 70, cyl - 70, 140, 140);
+        ctx.drawImage(cyan, headX - 150, cyl - 90, 300, 180);
+      }
+
+      // assembling particles
+      for (const p of ps) {
+        const a = clamp((t - p.delay) / p.dur);
+        if (a <= 0 || t >= p.ts) continue;
+        const e = 1 - Math.pow(1 - a, 3);
+        const x = p.tx + p.ox * (1 - e) + Math.sin(a * 9 + p.ph) * 9 * (1 - a);
+        const y = p.ty + p.oy * (1 - e) + Math.cos(a * 7 + p.ph) * 9 * (1 - a);
+        const settle = 1 - inA;
+        const tw = 0.7 + 0.3 * Math.sin(t / 90 * p.tw / 4 + p.ph);
+        ctx.globalAlpha = Math.min(1, (0.16 + 0.34 * (1 - a)) * Math.max(settle, a < 1 ? 1 : 0)) * tw;
+        const s = p.size * 2.4;
+        ctx.drawImage(cyan, x - s, y - s, s * 2, s * 2);
+        if (a < 0.4) { ctx.globalAlpha *= 0.7; const w = s * 0.5; ctx.drawImage(white, x - w, y - w, w * 2, w * 2); }
+      }
+
+      // ambient twinkles while the logo holds
+      if (t > 1700 && t < tD + 400) {
+        for (const s of sparkles) {
+          const v = Math.max(0, Math.sin(t / 1000 * s.f + s.ph)); if (v < .6) continue;
+          ctx.globalAlpha = (v - .6) * 2.2 * inA; ctx.drawImage(white, s.x - 5, s.y - 5, 10, 10);
+        }
+      }
+
+      // pixie dust: particles lift off, drift up and right, twinkle and fade
+      if (t >= tD) {
+        for (const p of ps) {
+          if (t < p.ts) continue;
+          const u = (t - p.ts) / 1000;
+          if (u > p.life) continue;
+          const k = u / p.life;
+          const x = p.tx + p.vx * u + Math.sin(u * 3 + p.ph) * 8 * u;
+          const y = p.ty - p.vy * u + Math.sin(u * 2.3 + p.ph * 2) * 6 * u - 8 * u * u;
+          const tw = 0.55 + 0.45 * Math.sin(u * p.tw * 3 + p.ph);
+          ctx.globalAlpha = Math.pow(1 - k, 1.3) * tw;
+          const s = p.size * (3.4 - 1.6 * k);
+          ctx.drawImage(k < 0.35 ? cyan : white, x - s, y - s, s * 2, s * 2);
+        }
+      }
+
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+      if (!revealed2 && t > tD + 250) { revealed2 = true; startReveal(); }
+      if (t < tD + WIPE + 3600) requestAnimationFrame(frame);
+      else ctx.clearRect(0, 0, VW, VH);
     };
     requestAnimationFrame(frame);
   }
-
 
   /* ---------- faint looping YouTube hero background (stops 5s before the end, then loops) ---------- */
   (function heroVideo() {
