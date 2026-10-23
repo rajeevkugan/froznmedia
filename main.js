@@ -287,7 +287,4 @@
   const tick = () => nav.classList.toggle('on-light', lights.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 80; }));
   addEventListener('scroll', tick, { passive: true }); tick();
 
-  // floating reel card lives over the hero, then steps aside
-  const card = $('#reelCard');
-  new IntersectionObserver(([e]) => card.classList.toggle('is-hidden', !e.isIntersecting), { threshold: 0.15 }).observe($('#top'));
 })();
