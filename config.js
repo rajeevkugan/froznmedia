@@ -18,6 +18,10 @@ window.FROZN = {
   // Auto-playing reel previews (used instead of the Instagram embeds when this list isn't empty).
   // Drop vertical .mp4 files in assets/reels/ and list them here. `link` is where a click goes.
   reels: [
+    { src: '/assets/reels/cerise-manor.mp4',  poster: '/assets/reels/cerise-manor.jpg',  title: '2637 Cerise Manor' },
+    { src: '/assets/reels/foxden-sold.mp4',    poster: '/assets/reels/foxden-sold.jpg',    title: 'Foxden — Sold' },
+    { src: '/assets/reels/wildwood-sold.mp4',  poster: '/assets/reels/wildwood-sold.jpg',  title: '2358 Wildwood — Sold Over Asking' },
+    { src: '/assets/reels/kingfisher.mp4',     poster: '/assets/reels/kingfisher.jpg',     title: 'Kingfisher Listing' },
     // { src: '/assets/reels/anirudh.mp4', poster: '/assets/reels/anirudh.jpg', title: 'Anirudh Live', link: 'https://www.instagram.com/reel/XXXX/' },
   ],
 
