@@ -140,6 +140,7 @@
       // save battery/data: pause while the hero is off-screen
       new IntersectionObserver(([en]) => {
         visible = en.isIntersecting;
+        wrap.classList.toggle('is-off', !visible);
         if (!ready) return;
         visible ? player.playVideo() : player.pauseVideo();
       }, { threshold: 0.05 }).observe($('#top'));
