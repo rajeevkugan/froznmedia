@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FROZN Media — Toronto's Top Video Agency</title>
+  <meta name="description" content="FROZN Media is Toronto's top video agency for creative ads and personal brand marketing. AI-driven content, AI workflows and AI avatars. Founder & Creative Director: Rajeev Kugan." />
+  <meta name="theme-color" content="#021a27" />
+  <meta property="og:title" content="FROZN Media — Toronto's Top Video Agency" />
+  <meta property="og:description" content="Creative ads, personal brand marketing and AI-powered content. Concerts, artists, institutions, brands." />
+  <meta property="og:image" content="/assets/logo-blue.png" />
+  <link rel="icon" href="/assets/logo-blue.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#top" aria-label="FROZN Media home"><img src="/assets/logo-white.png" alt="FROZN Media" /></a>
+    <nav class="nav__links">
+      <a href="#projects">Work</a>
+      <a href="#services">Services</a>
+      <a href="#about">Rajeev</a>
+      <a class="btn btn--sm" href="https://froznmedia.com/inquiry">Book a shoot</a>
+    </nav>
+  </header>
+
+  <!-- HERO: icy pane that cracks and falls as icicles on scroll -->
+  <section class="hero" id="top">
+    <div class="hero__sticky">
+      <div class="hero__scene">
+        <p class="eyebrow">Toronto · Video · AI</p>
+        <h1 class="hero__title">Toronto's <span>top video agency</span> for creative ads &amp; personal brands.</h1>
+        <p class="hero__sub">Concerts. Artists. Institutions. Brands. We build content that stops the scroll — powered by AI workflows and old-school craft.</p>
+        <a class="scroll-cue scroll-cue--dark" href="#projects">See the work ↓</a>
+      </div>
+      <canvas id="ice" aria-hidden="true"></canvas>
+      <div class="hero__front" id="front">
+        <img class="hero__logo" src="/assets/logo-blue.png" alt="FROZN Media" />
+        <p class="hero__hint">Scroll to break the ice</p>
+        <span class="hero__arrow">↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <svg class="fringe" id="fringe" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Latest projects</p>
+        <h2>Fresh off the <em>feed.</em></h2>
+        <p class="lead">Straight from <a href="https://www.instagram.com/froznmedia/" target="_blank" rel="noopener">@froznmedia</a> — what we're shooting right now.</p>
+      </div>
+    </div>
+    <div class="rail" id="igRail" aria-label="Latest Instagram projects"></div>
+    <div class="wrap reveal">
+      <a class="btn btn--ghost" href="https://www.instagram.com/froznmedia/" target="_blank" rel="noopener">Follow @froznmedia →</a>
+    </div>
+
+    <div class="wrap films" id="films" hidden>
+      <div class="sec-head reveal">
+        <p class="eyebrow">Featured films</p>
+        <h2>The work we're <em>proudest of.</em></h2>
+      </div>
+      <div class="films__grid" id="filmsGrid"></div>
+    </div>
+  </section>
+
+  <!-- TRUST MARQUEE -->
+  <section class="trust" aria-label="Worked with">
+    <p class="trust__label">Trusted by artists, stages &amp; institutions</p>
+    <div class="marquee"><div class="marquee__track" id="marquee"></div></div>
+  </section>
+
+  <!-- WHY / POSITIONING -->
+  <section class="why wrap">
+    <div class="why__grid">
+      <div class="reveal">
+        <p class="eyebrow">Why FROZN</p>
+        <h2>The go-to crew in the city for work that <em>actually lands.</em></h2>
+      </div>
+      <div class="why__cards">
+        <article class="card reveal"><h3>Big-stage experience</h3><p>We've filmed major concerts and artists — Anirudh, Yuvan, 50 Cent, French Montana — so your shoot gets the same energy and polish.</p></article>
+        <article class="card reveal"><h3>Institution-grade trust</h3><p>From CollegeTrackr to the NCAA, we deliver for organizations that need work done right, on time, and on brand.</p></article>
+        <article class="card reveal"><h3>AI-native workflow</h3><p>We integrate AI-driven content, AI-powered workflows and AI avatars — faster turnarounds, more concepts, bigger ideas.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">What we do</p>
+        <h2>Content built to <em>move people.</em></h2>
+      </div>
+      <div class="svc-grid" id="svcGrid"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT RAJEEV -->
+  <section class="about" id="about">
+    <div class="wrap about__grid">
+      <div class="about__photo reveal" id="aboutPhoto">
+        <img src="/assets/rajeev.jpg" alt="Rajeev Kugan, Founder and Creative Director of FROZN Media" onerror="this.parentElement.classList.add('about__photo--empty'); this.remove();" />
+        <span class="about__initials">RK</span>
+      </div>
+      <div class="about__text reveal">
+        <p class="eyebrow">The founder</p>
+        <h2>Rajeev <em>Kugan</em></h2>
+        <p class="role">Founder &amp; Creative Director</p>
+        <p>Rajeev is the creative engine behind FROZN Media and the go-to person in his community for top-tier video work. From arena-scale concerts to personal brands that need to be seen, he blends cinematic storytelling with AI-powered workflows to deliver content that gets results.</p>
+        <p>His portfolio spans the Anirudh and Yuvan concerts, 50 Cent and French Montana, and institutions like CollegeTrackr and the NCAA.</p>
+        <div class="about__links">
+          <a class="btn" href="https://www.instagram.com/rajeevkugan/" target="_blank" rel="noopener">@rajeevkugan</a>
+          <a class="btn btn--ghost" href="https://froznmedia.com/inquiry">Work with Rajeev</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="wrap">
+      <p class="eyebrow">Let's build</p>
+      <h2>Ready to make something <em>cold-blooded?</em></h2>
+      <a class="btn btn--lg" href="https://froznmedia.com/inquiry">Start your project</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <img src="/assets/logo-white.png" alt="FROZN Media" />
+    <p>Generating buzz. Driving results. Toronto media &amp; marketing agency.</p>
+    <p class="footer__links">
+      <a href="https://www.instagram.com/froznmedia/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/rajeevkugan/" target="_blank" rel="noopener">Rajeev</a>
+      <a href="https://www.instagram.com/froznmemories/" target="_blank" rel="noopener">Froznmemories (weddings)</a>
+    </p>
+    <p class="footer__copy">© <span id="yr"></span> FROZN Media. All rights reserved.</p>
+  </footer>
+
+  <script src="/config.js"></script>
+  <script src="/main.js"></script>
+</body>
+</html>
