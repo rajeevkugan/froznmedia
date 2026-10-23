@@ -178,4 +178,4 @@ body:has(.menu.is-open) .nav .menu-pill i { background: #fff; }
 .reel video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .reel__cap { position: absolute; left: 14px; bottom: 14px; padding: .45rem .9rem; border-radius: 999px; background: rgba(3,28,44,.55); backdrop-filter: blur(8px); color: #fff; font-weight: 600; font-size: .85rem; }
 
-.more-btn { margin-top: 1.6rem; }
+.more-btn { margin-top: 1.8rem; }

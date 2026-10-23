@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css" />
+  <script>document.write('<link rel="stylesheet" href="/styles.css?v=' + Date.now() + '">')</script>
 </head>
 <body class="is-loading">
   <!-- intro loader: logo centred on the brand colour, then the panel lifts away -->
@@ -63,7 +63,6 @@
   <section class="projects" id="projects">
     <div class="wrap">
       <h2 class="big big--navy reveal">Latest <span>projects</span></h2>
-      <p class="lead reveal">Straight from <a href="https://www.instagram.com/froznmedia/" target="_blank" rel="noopener">@froznmedia</a> — what we're shooting right now.</p>
       <a class="btn btn--dark more-btn reveal" href="https://www.instagram.com/froznmedia/" target="_blank" rel="noopener">See more of our work @froznmedia →</a>
     </div>
     <div class="grid" id="igGrid"></div>
@@ -133,7 +132,8 @@
     <p class="footer__copy">© <span id="yr"></span> FROZN Media. All rights reserved.</p>
   </footer>
 
-  <script src="/config.js"></script>
-  <script src="/main.js"></script>
+  <script>/* cache-busted so edits to config/reels always show up */
+    document.write('<script src="/config.js?v=' + Date.now() + '"><\/script><script src="/main.js?v=' + Date.now() + '"><\/script>');
+  </script>
 </body>
 </html>
