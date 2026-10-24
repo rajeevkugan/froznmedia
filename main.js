@@ -22,7 +22,8 @@
   };
   setTimeout(startReveal, 9000); // never trap the visitor behind the loader
 
-  const fontsReady = (document.fonts && document.fonts.ready) || Promise.resolve();
+  // never hold the intro hostage to slow fonts: wait at most 700ms
+  const fontsReady = Promise.race([(document.fonts && document.fonts.ready) || Promise.resolve(), new Promise((r) => setTimeout(r, 700))]);
   const logo = new Image();
   logo.src = '/assets/logo-blue.png';
   Promise.all([logo.decode ? logo.decode().catch(() => {}) : Promise.resolve(), fontsReady]).then(() => {
