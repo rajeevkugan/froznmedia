@@ -174,6 +174,7 @@
   /* ---------- faint looping YouTube hero background (stops 5s before the end, then loops) ---------- */
   (function heroVideo() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (matchMedia('(max-width: 760px) and (hover: none)').matches) return; // phones: skip (autoplay is unreliable and YouTube's own pause icon shows through)
     const VIDEO_ID = 'QtgwJ-2qoLM', CUT_END = 5;
     const wrap = $('#heroVideo');
     window.onYouTubeIframeAPIReady = () => {
@@ -285,6 +286,7 @@
   // nav switches to dark-on-light over the pale sections
   const nav = $('.nav'), lights = [...document.querySelectorAll('.projects, .services')];
   const tick = () => nav.classList.toggle('on-light', lights.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 80; }));
-  addEventListener('scroll', tick, { passive: true }); tick();
+  const bar = () => nav.classList.toggle('scrolled', scrollY > 120);
+  addEventListener('scroll', () => { tick(); bar(); }, { passive: true }); tick(); bar();
 
 })();
