@@ -48,7 +48,7 @@
     btn.disabled = true; btn.textContent = 'Sending…';
     try {
       await fetch(FORM_URL, { method: 'POST', mode: 'no-cors', body: payload() });
-      form.hidden = true; $('#inqThanks').hidden = false; scrollTo({ top: 0, behavior: 'smooth' });
+      form.hidden = true; $('#inqThanks').hidden = false; $('#inqThanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (x) {
       btn.disabled = false; btn.textContent = 'Send inquiry →';
       fail("Couldn't send that — please check your connection, or contact us at froznmediainc@gmail.com / 416-475-4545.");

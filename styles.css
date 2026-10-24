@@ -218,3 +218,13 @@ body:has(.menu.is-open) .nav .menu-pill i { background: #fff; }
 .inq__thanks .big { font-size: clamp(3.4rem, 12vw, 9rem); }
 .inq__thanks p { font-size: 1.15rem; }
 a.menu-pill { text-decoration: none; }
+
+/* quote form lives at the bottom of the home page */
+.cta .cta__title { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(2.2rem, 5.2vw, 4.2rem); line-height: 1; max-width: none; margin: 0 0 1.2rem; }
+.cta .cta__title span { color: var(--blue); }
+.cta__sub { max-width: 60ch; color: #a9c6d6; font-size: 1.05rem; margin-bottom: clamp(26px, 4vw, 44px); }
+.cta__sub a { color: #fff; font-weight: 600; text-underline-offset: 3px; }
+.cta .inq__card { margin-top: 0; max-width: 980px; }
+.cta .inq__thanks { margin-top: 0; color: #fff; }
+.cta .inq__thanks .big { font-size: clamp(2.6rem, 7vw, 5rem); }
+.cta .inq__thanks .big span { color: var(--blue); }
