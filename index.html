@@ -162,6 +162,7 @@
             <label><input type="checkbox" name="editType" value="7-10min highlight" /><span>7–10 min highlight</span></label>
             <label><input type="checkbox" name="editType" value="15-30min long form" /><span>15–30 min long form</span></label>
           </div>
+          <div class="qtys" id="qtys" hidden></div>
         </div>
       </fieldset>
 
@@ -202,6 +203,7 @@
             <label><input type="checkbox" name="addons" value="Special VFX (for video content)" /><span>Special VFX <small>for video content</small></span></label>
             <label><input type="checkbox" name="addons" value="Marketing (content promotion assistance, cross platform promotion)" /><span>Marketing <small>promotion, cross-platform</small></span></label>
             <label><input type="checkbox" name="addons" value="Music Production (royalty free music, digitally produced/remixed music etc)" /><span>Music Production <small>royalty-free, produced or remixed</small></span></label>
+            <label><input type="checkbox" name="extraAI" value="AI Generations" /><span>AI Generations <small>AI visuals, avatars &amp; video</small></span></label>
           </div>
         </div>
         <label class="f"><span>Questions or additional details about the inquiry?</span><textarea name="details" rows="5"></textarea></label>
@@ -228,7 +230,7 @@
     <p class="footer__copy">© <span id="yr"></span> FROZN Media. All rights reserved.</p>
   </footer>
 
-  <script src="/inquiry/inquiry.js?v=2" defer></script>
+  <script src="/inquiry/inquiry.js?v=3" defer></script>
   <script>/* cache-busted so edits to config/reels always show up */
     document.write('<script src="/config.js?v=' + Date.now() + '"><\/script><script src="/main.js?v=' + Date.now() + '"><\/script>');
   </script>

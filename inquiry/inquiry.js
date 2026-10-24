@@ -13,12 +13,30 @@
   const other = $('#evOther'), otherText = $('#evOtherText');
   other.addEventListener('change', () => { otherText.hidden = !other.checked; if (other.checked) otherText.focus(); });
 
+  // how many edits of each length? (one dropdown per selected length)
+  const qtys = $('#qtys'), COUNTS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '10+'];
+  const syncQtys = () => {
+    const keep = {}; qtys.querySelectorAll('select').forEach((s) => { keep[s.dataset.v] = s.value; });
+    const picked = [...form.querySelectorAll('input[name=editType]:checked')].map((c) => c.value);
+    qtys.innerHTML = picked.map((v) => `<label class="qty"><span>${v.replace(/-/g, '–')}</span><select data-v="${v}"><option value="">How many?</option>${COUNTS.map((n) => `<option>${n}</option>`).join('')}</select></label>`).join('');
+    qtys.querySelectorAll('select').forEach((s) => { if (keep[s.dataset.v]) s.value = keep[s.dataset.v]; });
+    qtys.hidden = !picked.length;
+  };
+  form.querySelectorAll('input[name=editType]').forEach((c) => c.addEventListener('change', syncQtys));
+
   const fail = (msg, el) => { err.textContent = msg; err.hidden = false; (el || err).scrollIntoView({ behavior: 'smooth', block: 'center' }); };
 
   const payload = () => {
     const f = new FormData(form), p = new URLSearchParams();
     const put = (k, v) => { if (v !== null && v !== '') p.append('entry.' + E[k], v); };
-    ['name', 'phone', 'email', 'need', 'location', 'hours', 'guests', 'details', 'time1'].forEach((k) => put(k, (f.get(k) || '').toString().trim()));
+    ['name', 'phone', 'email', 'need', 'location', 'hours', 'guests', 'time1'].forEach((k) => put(k, (f.get(k) || '').toString().trim()));
+    // the Google Form has no fields for these, so they ride along in the details box
+    const extra = [];
+    const edits = [...qtys.querySelectorAll('select')].filter((s) => s.value).map((s) => `${s.dataset.v} x ${s.value}`);
+    if (edits.length) extra.push('Edits wanted: ' + edits.join('; '));
+    if (f.get('extraAI')) extra.push('Add-on requested: AI Generations');
+    const det = (f.get('details') || '').toString().trim();
+    put('details', extra.length ? (det ? det + '\n\n' : '') + '--- From the website ---\n' + extra.join('\n') : det);
     ['eventType', 'editType', 'addons'].forEach((k) => f.getAll(k).forEach((v) => put(k, v)));
     if (f.getAll('eventType').includes('__other_option__')) p.append('entry.' + E.eventType + '.other_option_response', (f.get('eventTypeOther') || '').toString().trim());
     [['date1'], ['date2']].forEach(([k]) => {
