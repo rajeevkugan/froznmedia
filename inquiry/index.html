@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Get a Quote — FROZN Media</title>
+  <meta name="description" content="Tell us about your shoot and FROZN Media will get back to you with details, availability and a quote." />
+  <meta name="theme-color" content="#0a84d6" />
+  <link rel="icon" href="/assets/logo-blue.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=inq1" />
+</head>
+<body class="inq-body">
+  <header class="nav">
+    <a class="nav__logo" href="/" aria-label="FROZN Media home"><img class="lg-w" src="/assets/logo-white.png" alt="FROZN Media" /></a>
+    <a class="menu-pill" href="/">← Back to site</a>
+  </header>
+
+  <main class="inq">
+    <div class="inq__head">
+      <h1 class="big">Get a <span>quote</span></h1>
+      <p class="inq__intro">Tell us about your shoot. We'll get back to you to go over details, availability and pricing. Questions? Reach us at <a href="mailto:froznmediainc@gmail.com">froznmediainc@gmail.com</a>, call <a href="tel:+14164754545">416-475-4545</a> or <a href="https://wa.me/14164754545" target="_blank" rel="noopener">message us on WhatsApp</a>.</p>
+      <p class="inq__wed">Planning a wedding? <a href="https://tinyurl.com/froznweddings" target="_blank" rel="noopener">Start here instead →</a></p>
+    </div>
+
+    <form class="inq__card" id="inqForm" novalidate>
+      <!-- spam trap: real visitors never see or fill this -->
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <fieldset class="fs">
+        <legend><b>01</b> About you</legend>
+        <div class="row">
+          <label class="f"><span>My name is <i>*</i></span><input name="name" type="text" autocomplete="name" required /></label>
+          <label class="f"><span>My phone number is <i>*</i></span><input name="phone" type="tel" autocomplete="tel" required /></label>
+        </div>
+        <label class="f"><span>E-mail <i>*</i></span><input name="email" type="email" autocomplete="email" required /></label>
+      </fieldset>
+
+      <fieldset class="fs">
+        <legend><b>02</b> The project</legend>
+        <div class="grp" data-name="need" data-required>
+          <p class="q">I need @froznmedia for… <i>*</i></p>
+          <div class="chips">
+            <label><input type="radio" name="need" value="Photos" /><span>Photos</span></label>
+            <label><input type="radio" name="need" value="Videos" /><span>Videos</span></label>
+            <label><input type="radio" name="need" value="Both Photo & Video" /><span>Both Photo &amp; Video</span></label>
+          </div>
+        </div>
+        <div class="grp" data-name="eventType" data-required>
+          <p class="q">Type of event <i>*</i> <small>Select multiple if applicable</small></p>
+          <div class="chips">
+            <label><input type="checkbox" name="eventType" value="Music Video" /><span>Music Video</span></label>
+            <label><input type="checkbox" name="eventType" value="Club Night / DJ Event" /><span>Club Night / DJ Event</span></label>
+            <label><input type="checkbox" name="eventType" value="Personal Event" /><span>Personal Event</span></label>
+            <label><input type="checkbox" name="eventType" value="Corporate Event" /><span>Corporate Event</span></label>
+            <label><input type="checkbox" name="eventType" value="Product/Service Ad or Promotion" /><span>Product/Service Ad or Promotion</span></label>
+            <label><input type="checkbox" name="eventType" value="Personal Branding (Portraits, About Me Highlights etc)" /><span>Personal Branding (Portraits, About Me Highlights etc)</span></label>
+            <label><input type="checkbox" name="eventType" value="__other_option__" id="evOther" /><span>Other</span></label>
+          </div>
+          <input class="f-other" id="evOtherText" name="eventTypeOther" type="text" placeholder="Tell us what it is" hidden />
+        </div>
+        <div class="grp" data-name="editType">
+          <p class="q">Type of video edit?</p>
+          <div class="chips">
+            <label><input type="checkbox" name="editType" value="1 min highlight" /><span>1 min highlight</span></label>
+            <label><input type="checkbox" name="editType" value="1-2 min highlight" /><span>1–2 min highlight</span></label>
+            <label><input type="checkbox" name="editType" value="3-5 min highlight" /><span>3–5 min highlight</span></label>
+            <label><input type="checkbox" name="editType" value="7-10min highlight" /><span>7–10 min highlight</span></label>
+            <label><input type="checkbox" name="editType" value="15-30min long form" /><span>15–30 min long form</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="fs">
+        <legend><b>03</b> Date &amp; details</legend>
+        <div class="row">
+          <label class="f"><span>Date of event / shoot <i>*</i></span><input name="date1" type="date" required /></label>
+          <label class="f"><span>Start time of event / shoot</span><input name="time1" type="time" /></label>
+        </div>
+        <div class="row">
+          <label class="f"><span>Second date option</span><input name="date2" type="date" /></label>
+          <label class="f"><span>Start time for second option</span><input name="time2" type="time" /></label>
+        </div>
+        <label class="f"><span>Location?</span><small>A venue (name/address), Airbnb, home event or specific area to shoot</small><input name="location" type="text" autocomplete="street-address" /></label>
+        <div class="row">
+          <label class="f"><span>Approx. # of hours needed <i>*</i></span>
+            <select name="hours" required>
+              <option value="">Choose</option>
+              <option>1 hours</option><option>2 hours</option><option>3 hours</option><option>4 hours</option>
+              <option>6 hours</option><option>7 hours</option><option>8 hours</option><option>8 hours+ (2-day event)</option>
+            </select>
+          </label>
+          <label class="f"><span>Approx. # of guests (if applicable)</span>
+            <select name="guests">
+              <option value="">Choose</option>
+              <option>0-50</option><option>50-100</option><option>100-200</option><option>300-400</option><option>500-600</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="fs">
+        <legend><b>04</b> Extras</legend>
+        <div class="grp" data-name="addons">
+          <p class="q">Quote for add-on services</p>
+          <div class="chips">
+            <label><input type="checkbox" name="addons" value="Visual Design (flyers, custom design artwork, social media tailored content)" /><span>Visual Design <small>flyers, custom artwork, social content</small></span></label>
+            <label><input type="checkbox" name="addons" value="Special VFX (for video content)" /><span>Special VFX <small>for video content</small></span></label>
+            <label><input type="checkbox" name="addons" value="Marketing (content promotion assistance, cross platform promotion)" /><span>Marketing <small>promotion, cross-platform</small></span></label>
+            <label><input type="checkbox" name="addons" value="Music Production (royalty free music, digitally produced/remixed music etc)" /><span>Music Production <small>royalty-free, produced or remixed</small></span></label>
+          </div>
+        </div>
+        <label class="f"><span>Questions or additional details about the inquiry?</span><textarea name="details" rows="5"></textarea></label>
+      </fieldset>
+
+      <p class="inq__err" id="inqErr" role="alert" hidden></p>
+      <button class="btn btn--dark inq__submit" id="inqBtn" type="submit">Send inquiry →</button>
+    </form>
+
+    <div class="inq__thanks" id="inqThanks" hidden>
+      <h2 class="big">Thanks<span>!</span></h2>
+      <p>Your inquiry has been sent. We'll contact you as soon as possible. For faster service, call <a href="tel:+14164754545">416-475-4545</a> or message us on <a href="https://wa.me/14164754545" target="_blank" rel="noopener">WhatsApp</a>.</p>
+      <a class="btn btn--dark" href="/">Back to the site</a>
+    </div>
+  </main>
+
+  <script src="/inquiry/inquiry.js?v=1"></script>
+</body>
+</html>
