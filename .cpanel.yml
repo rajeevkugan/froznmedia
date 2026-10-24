@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/froznmed/public_html/
+    - /bin/rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.cpanel.yml' --exclude='README.md' --exclude='.claude' --exclude='.DS_Store' ./ $DEPLOYPATH
