@@ -1,5 +1,5 @@
 ---
-name: agency-site-builder
+name: devbites-website-skill
 description: Build and ship a premium, animation-led marketing site for a creative/video agency as a plain static site (no build step) — branded particle intro, giant condensed type, autoplaying reel previews, native quote form that posts to a Google Form, cPanel Git deploy, and mobile/iOS hardening. Use when asked to recreate a reference agency site, add an intro animation, embed reels/YouTube, rebuild an inquiry form in-site, or go live on cPanel hosting.
 ---
 
